@@ -8,11 +8,11 @@ import packaging.version
 from base64 import b64encode, b64decode
 from datetime import datetime, timezone
 from importlib import import_module
-from random import randint, choice
 from enum import Enum
 
 import marshmallow as ma
 import marshmallow_enum as ma_enum
+import secrets
 
 
 class BaseWorld:
@@ -62,7 +62,7 @@ class BaseWorld:
         if min > max:
             logging.warn(f'Jitter range max value (max={max}) less than min value (min={min}). Using min={max} and max={min}.')
             min, max = max, min
-        return randint(min, max)
+        return secrets.SystemRandom().randint(min, max)
 
     @staticmethod
     def create_logger(name):
@@ -97,11 +97,11 @@ class BaseWorld:
 
     @staticmethod
     def generate_name(size=16):
-        return ''.join(choice(string.ascii_lowercase) for _ in range(size))
+        return ''.join(secrets.choice(string.ascii_lowercase) for _ in range(size))
 
     @staticmethod
     def generate_number(size=6):
-        return randint((10 ** (size - 1)), ((10 ** size) - 1))
+        return secrets.SystemRandom().randint((10 ** (size - 1)), ((10 ** size) - 1))
 
     @staticmethod
     def is_base64(s):
